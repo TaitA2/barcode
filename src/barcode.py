@@ -3,6 +3,8 @@ import time
 
 # create Turtle object to draw lines with
 pen = turtle.Turtle()
+# hide pen
+pen.hideturtle()
 # increase drawing speed
 pen.speed("fastest")
 # orientate pen to draw vertically instead of horizontally
@@ -92,7 +94,6 @@ def main():
     dec = "51000012517"
     if len(dec) < 12:
         dec = "0" * (12 - len(dec)) + dec
-    print(dec)
     draw_barcode(length, width, dec)
 
     # leave time to view result
