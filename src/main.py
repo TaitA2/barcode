@@ -1,5 +1,7 @@
 import turtle
 import time
+# import dictionaries for binary_dicts file
+from binary_dicts import *
 
 # declare pen variable as None in global scope to allow for user input
 pen = None
@@ -11,24 +13,10 @@ def init():
     # hide pen
     pen.hideturtle()
     # increase drawing speed
-    pen.speed("fastest")
+    pen.speed(0)
     # orientate pen to draw vertically instead of horizontally
     pen.right(90)
     return pen
-
-# Dictionary for converting decimal numbers to barcode binary
-codes = {
-    "0": "0001101",
-    "1": "0011001",
-    "2": "0010011",
-    "3": "0111101",
-    "4": "0100011",
-    "5": "0110001",
-    "6": "0101111",
-    "7": "0111011",
-    "8": "0110111",
-    "9": "0001011"
-}
 
 # function to draw a line
 def draw_line(length, width):
@@ -53,7 +41,7 @@ def skip_line(width):
     pen.pendown()
 
 # function to convert decimal numbers to their barcode binary conterpart
-def convert(dec):
+def convert(dec, type):
     # declare empty string for binary 
     bin = ""
     # declare border and center values for
@@ -61,16 +49,16 @@ def convert(dec):
     center = "01010"
     # add left border lines to start of barcode
     bin += border
-    # converts to binary according to 'codes' dictionary
+    # converts to binary according to appropriate dictionary
     i = 0
     while i < len(dec) // 2:
-        bin += codes[dec[i]]
+        bin += type[dec[i]]
         i += 1
     # add center lines to center of barcode
     bin += center
-    # converts to binary according to the inversion of the 'codes' dictionary
+    # converts to binary according to the inversion of the appropriate dictionary
     while i < len(dec):
-        temp = codes[dec[i]]
+        temp = type[dec[i]]
         # swaps every 1 with 0 and 0 with 1
         for bit in temp:
             bin += str(1 - int(bit))
@@ -81,8 +69,8 @@ def convert(dec):
     return bin
 
 # function to draw barcode
-def draw_barcode(length, width, dec):
-    bin = convert(dec)
+def draw_barcode(length, width, dec, type):
+    bin = convert(dec, type)
     for digit in bin:
         if digit == "1":
             draw_line(length, width)
@@ -92,21 +80,42 @@ def draw_barcode(length, width, dec):
             raise Exception("Invalid binary")
 
 def main():
+
     # set length of bar code lines
-    length = 300
+    length = 60
     # set width of bar code lines
-    width = 5
+    width = 1
+
+
+    # set barcode type
+    type = input("Enter a barcode type(UPC / EAN): ").lower()
+    while type not in ["upc", "ean"]:
+        type = input("Enter a barcode type(UPC / EAN): ").lower()
+    if type == "upc":
+        type = upc
+    elif type == "ean":
+        type = ean
+
+
     # set decimal value to be converted
-    dec = input("Enter a 12 digit number: ")
-    while len(dec) != 12 or not dec.isnumeric():
-        print("INVALID NUMBER")
-        dec = input("Enter a 12 digit number: ")
+    dec = input("Enter a barcode number: ")
+    if type == "upc":
+        while not dec.isnumeric() or len(dec) != 12:
+            print("INVALID NUMBER - Must be 12 digits")
+            dec = input("Enter a barcode number: ")
+    elif type == "ean":
+        while not dec.isnumeric() or len(dec) != 13:
+            print("INVALID NUMBER - Must be 13 digits")
+            dec = input("Enter a barcode number: ")
+
+
     # initialize turtle object for drawing barcode
     global pen
     pen = init()
-    if len(dec) < 12:
-        dec = "0" * (12 - len(dec)) + dec
-    draw_barcode(length, width, dec)
+
+
+    # draw the barcode
+    draw_barcode(length, width, dec, type)
 
     # leave time to view result
     time.sleep(60)
