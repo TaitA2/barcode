@@ -1,14 +1,20 @@
 import turtle
 import time
 
-# create Turtle object to draw lines with
-pen = turtle.Turtle()
-# hide pen
-pen.hideturtle()
-# increase drawing speed
-pen.speed("fastest")
-# orientate pen to draw vertically instead of horizontally
-pen.right(90)
+# declare pen variable as None in global scope to allow for user input
+pen = None
+
+# initialize turtle object for drawing barcode
+def init():
+    # create Turtle object to draw lines with
+    pen = turtle.Turtle()
+    # hide pen
+    pen.hideturtle()
+    # increase drawing speed
+    pen.speed("fastest")
+    # orientate pen to draw vertically instead of horizontally
+    pen.right(90)
+    return pen
 
 # Dictionary for converting decimal numbers to barcode binary
 codes = {
@@ -91,7 +97,13 @@ def main():
     # set width of bar code lines
     width = 5
     # set decimal value to be converted
-    dec = "51000012517"
+    dec = input("Enter a 12 digit number: ")
+    while len(dec) != 12 or not dec.isnumeric():
+        print("INVALID NUMBER")
+        dec = input("Enter a 12 digit number: ")
+    # initialize turtle object for drawing barcode
+    global pen
+    pen = init()
     if len(dec) < 12:
         dec = "0" * (12 - len(dec)) + dec
     draw_barcode(length, width, dec)
