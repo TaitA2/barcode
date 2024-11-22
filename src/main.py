@@ -4,6 +4,7 @@ import time
 # declare pen variable as None in global scope to allow for user input
 pen = None
 
+
 # initialize turtle object for drawing barcode
 def init():
     # create Turtle object to draw lines with
@@ -16,6 +17,7 @@ def init():
     pen.right(90)
     return pen
 
+
 # Dictionary for converting decimal numbers to barcode binary
 codes = {
     "0": "0001101",
@@ -27,8 +29,9 @@ codes = {
     "6": "0101111",
     "7": "0111011",
     "8": "0110111",
-    "9": "0001011"
+    "9": "0001011",
 }
+
 
 # function to draw a line
 def draw_line(length, width):
@@ -44,6 +47,7 @@ def draw_line(length, width):
         pen.right(90)
         pen.pendown()
 
+
 # function to skip a line
 def skip_line(width):
     pen.penup()
@@ -52,9 +56,10 @@ def skip_line(width):
     pen.right(90)
     pen.pendown()
 
+
 # function to convert decimal numbers to their barcode binary conterpart
 def convert(dec):
-    # declare empty string for binary 
+    # declare empty string for binary
     bin = ""
     # declare border and center values for
     border = "101"
@@ -80,6 +85,7 @@ def convert(dec):
     # return resulting binary
     return bin
 
+
 # function to draw barcode
 def draw_barcode(length, width, dec):
     bin = convert(dec)
@@ -90,6 +96,7 @@ def draw_barcode(length, width, dec):
             skip_line(width)
         else:
             raise Exception("Invalid binary")
+
 
 def main():
     # set length of bar code lines
@@ -110,6 +117,7 @@ def main():
 
     # leave time to view result
     time.sleep(60)
+
 
 if __name__ == "__main__":
     main()
