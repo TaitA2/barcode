@@ -21,21 +21,6 @@ def init():
     return pen
 
 
-# Dictionary for converting decimal numbers to barcode binary
-codes = {
-    "0": "0001101",
-    "1": "0011001",
-    "2": "0010011",
-    "3": "0111101",
-    "4": "0100011",
-    "5": "0110001",
-    "6": "0101111",
-    "7": "0111011",
-    "8": "0110111",
-    "9": "0001011",
-}
-
-
 # function to draw a line
 def draw_line(length, width):
     for i in range(width):
@@ -104,9 +89,9 @@ def draw_barcode(length, width, dec, type):
 def main():
 
     # set length of bar code lines
-    length = 60
+    length = 300
     # set width of bar code lines
-    width = 1
+    width = 5
 
     # set barcode type
     type = input("Enter a barcode type(UPC / EAN): ").lower()
