@@ -1,4 +1,4 @@
-import turtle
+import tkinter
 import time
 
 # import dictionaries for binary_dicts file
@@ -9,16 +9,17 @@ pen = None
 
 
 # initialize turtle object for drawing barcode
-def init():
-    # create Turtle object to draw lines with
-    pen = turtle.Turtle()
-    # hide pen
-    pen.hideturtle()
-    # increase drawing speed
-    pen.speed(0)
-    # orientate pen to draw vertically instead of horizontally
-    pen.right(90)
-    return pen
+def init(dec):
+    root = tkinter.Tk()
+
+    root.title("Barcode Generator")
+
+    label = tkinter.Label(root, text=dec)
+    label.pack()
+
+    canvas = tkinter.Canvas(root, width=365, height=250)
+    canvas.pack()
+    return root, canvas
 
 
 # function to draw a line
@@ -76,22 +77,26 @@ def convert(dec, type):
 
 # function to draw barcode
 def draw_barcode(length, width, dec, type):
+    root, canvas = init(dec)
     bin = convert(dec, type)
-    for digit in bin:
-        if digit == "1":
-            draw_line(length, width)
-        elif digit == "0":
-            skip_line(width)
-        else:
-            raise Exception("Invalid binary")
+    i = x = 0
+    while i < len(bin):
+        if bin[i] == "1":
+            canvas.create_rectangle(40 + x, 40, 40 + x + width, length, fill="black")
+
+        x += width
+        i += 1
+
+    # do the thing
+    root.mainloop()
 
 
 def main():
 
     # set length of bar code lines
-    length = 300
+    length = 200
     # set width of bar code lines
-    width = 5
+    width = 3
 
     # set barcode type
     type = input("Enter a barcode type(UPC / EAN): ").lower()
@@ -113,15 +118,8 @@ def main():
             print("INVALID NUMBER - Must be 13 digits")
             dec = input("Enter a barcode number: ")
 
-    # initialize turtle object for drawing barcode
-    global pen
-    pen = init()
-
     # draw the barcode
     draw_barcode(length, width, dec, type)
-
-    # leave time to view result
-    time.sleep(60)
 
 
 if __name__ == "__main__":
