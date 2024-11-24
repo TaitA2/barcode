@@ -1,5 +1,6 @@
 # Dictionaries for converting decimal numbers to barcode binary
 upc = {
+    "length": 12,
     "0": "0001101",
     "1": "0011001",
     "2": "0010011",
@@ -13,6 +14,7 @@ upc = {
 }
 
 ean = {
+    "length": 13,
     "0": "0001101",
     "1": "0011001",
     "2": "0010011",
