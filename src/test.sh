@@ -1,1 +1,1 @@
-cat test.txt | python3 main.py
+python3 main.py < test.txt
